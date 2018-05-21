@@ -21,8 +21,11 @@ catch_df <- read.csv(url("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df3
 ```
 
 ```{r}
-df_cleaned <- df %>% 
-              filter(...) %>%
-              select(...)
+catch_df %>% 
+  select(Region, Year, Chinook, Sockeye, Coho, Pink, Chum) %>% 
+  head()
 ```
-              
+ 
+ 
+
+  
