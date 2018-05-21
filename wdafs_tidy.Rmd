@@ -26,6 +26,98 @@ catch_df %>%
   head()
 ```
  
- 
+```{r}
+catch_df <- catch_df %>% 
+  gather(species, catch, -Region, -Year)
 
-  
+head(catch_df)
+```
+```{r}
+catch_df %>% 
+  spread(species, catch) %>% 
+  head()
+```
+
+```{r}
+catch_df <- catch_df %>% 
+  rename(catch_thousands = catch)
+
+head(catch_df)
+```
+
+
+```{r}
+catch_df <- catch_df %>%
+  mutate(catch = catch_thousands * 1000)
+```
+
+
+```{r}
+summary(catch_df)
+```
+
+```{r}
+catch_integers <- as.integer(catch_df$catch_thousands)
+```
+
+```{r}
+which(is.na(catch_integers))
+```
+
+```{r}
+catch_df[401,]
+```
+
+```{r}
+catch_df <- catch_df %>%
+  mutate(catch_thousands = ifelse(catch_thousands == "I", 1, catch_thousands),
+         catch_thousands = as.integer(catch_thousands))
+```
+
+```{r}
+catch_df <- catch_df %>%
+  mutate(catch = catch_thousands * 1000)
+
+summary(catch_df)
+```
+```{r}
+catch_df <- catch_df %>% 
+  select(-catch_thousands)
+
+head(catch_df)
+```
+```{r}
+catch_df %>% 
+  group_by(Region) %>%
+  summarise(mean(catch))
+```
+
+# Joins
+
+```{r}
+region_defs <- read.csv(url("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.303.1", method = "libcurl"),
+                        stringsAsFactors = FALSE)
+head(region_defs)
+
+```
+```{r}
+catch_df %>% 
+  group_by(Region) %>% 
+  summarise(total_catch = sum(catch)) %>% 
+  left_join(region_defs, by = c("Region" = "code"))
+```
+
+
+```{r}
+region_defs <- region_defs %>% 
+  rename(Region = code, mgmtArea = Region_Name)
+
+catch_df %>% 
+  group_by(Region) %>% 
+  summarise(total_catch = sum(catch)) %>% 
+  left_join(region_defs, by = c("Region"))
+```
+
+
+
+
