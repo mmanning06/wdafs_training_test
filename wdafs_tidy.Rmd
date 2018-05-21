@@ -1,0 +1,28 @@
+---
+title: "Tidy_Data"
+author: "Michael Manning"
+date: "May 21, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+library(tidyr)
+```
+
+```{r}
+catch_df <- read.csv(url("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.302.1", method = "libcurl"),
+                    stringsAsFactors = FALSE)
+   head(catch_df)
+```
+
+```{r}
+df_cleaned <- df %>% 
+              filter(...) %>%
+              select(...)
+```
+              
